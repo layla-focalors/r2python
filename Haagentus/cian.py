@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from statistics import *
+from scipy import stats
 
 def stem(_value:list, _scale:int):
     stemgraphic.stem_graphic(_value, scale=_scale)
@@ -44,3 +45,48 @@ def freq_plot(_labels:list, _values:list, title:str, xlab:str, ylab:str, _line: 
     plt.bar(x, _values)
     plt.xticks(x, _labels)
     plt.show()
+    
+    return plt
+    
+def scatter(_x:list, _y:list, xlab:str=None, ylab:str=None):
+    fig, ax1 = plt.subplots()
+    ax1.scatter(_x, _y)
+    return ax1
+
+def pearson(_x:list, _y:list):
+    val = stats.pearsonr(_x, _y)
+    return val
+
+def barplot(data1:list, data2:list, label:list, color:str, alpha:float, edgecolor:str):
+    if(not (len(data1) == len(data2))):
+        print("Error : 모든 데이터의 길이는 같아야 합니다.")
+        return None
+    if(len(label) >= 3):
+        values = []
+        re_values = []
+        for i in range(len(data1)):
+            xs = data1[i] + data2[i]
+            values.append(xs)
+        total = sum(data1) + sum(data2)
+        for i in range(3):
+            data = round((values[i] / total), 3)
+            data = round((data * 100), 1)
+            re_values.append(data)
+        plt.rc('font', family='Malgun Gothic')
+        plt.bar(label, re_values, color=f'{color}', alpha=alpha, edgecolor=f'{edgecolor}')
+        plt.show()
+        return plt
+    else:
+        thread = sum(data1), sum(data2)
+        values = []
+        for i in range(len(thread)):
+            total = sum(thread)
+            data = round((thread[i] / total), 3)
+            data = round((data * 100), 1)
+            values.append(data)
+        plt.rc('font', family='Malgun Gothic')
+        plt.bar(label, values, color=f'{color}', alpha=alpha, edgecolor=f'{edgecolor}')
+        plt.show()
+        return plt
+
+    
